@@ -1,0 +1,29 @@
+{
+  "name": "NESTLEBOT",
+  "version": "1.1.5",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@discordjs/opus": "^0.10.0",
+    "@discordjs/rest": "^2.6.0",
+    "@discordjs/voice": "^0.18.0",
+    "@distube/soundcloud": "^2.0.4",
+    "@distube/spotify": "^2.0.2",
+    "@distube/yt-dlp": "^2.0.1",
+    "discord-api-types": "^0.38.37",
+    "discord.js": "^14.24.2",
+    "distube": "^5.2.3",
+    "dotenv": "^17.2.3",
+    "ffmpeg-static": "^5.2.0",
+    "firebase": "^12.7.0",
+    "libsodium-wrappers": "^0.7.15",
+    "play-dl": "^1.9.7"
+  }
+}

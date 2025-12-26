@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bot Playlist Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Kanit', sans-serif; background: #1a1a1a; color: white; display: flex; flex-direction: column; align-items: center; padding: 20px; }
+        .container { width: 100%; max-width: 600px; background: #2d2d2d; padding: 20px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
+        h1 { text-align: center; color: #ff4757; }
+        .input-group { display: flex; gap: 10px; margin-bottom: 20px; }
+        input { flex: 1; padding: 10px; border-radius: 5px; border: none; outline: none; }
+        button { padding: 10px 20px; border-radius: 5px; border: none; cursor: pointer; font-weight: bold; transition: 0.2s; }
+        .btn-add { background: #2ed573; color: white; }
+        .btn-add:hover { background: #26af61; }
+        .btn-delete { background: #ff4757; color: white; margin-left: auto; }
+        .btn-delete:hover { background: #e04050; }
+        ul { list-style: none; padding: 0; }
+        li { background: #404040; margin: 5px 0; padding: 10px; border-radius: 5px; display: flex; align-items: center; justify-content: space-between; word-break: break-all; }
+        a { color: #70a1ff; text-decoration: none; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Cloud Playlist Manager</h1>
+        <div class="input-group">
+            <input type="text" id="urlInput" placeholder="วางลิงก์ YouTube / Spotify ที่นี่...">
+            <button class="btn-add" id="addBtn">เพิ่มเพลง</button>
+        </div>
+        <ul id="playlist">
+            <li style="text-align:center;">กำลังโหลดข้อมูล...</li>
+        </ul>
+    </div>
+
+    
+
+
+    
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+        import { getDatabase, ref, push, onValue, remove } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBY5b_eChwHx3qO-J4YkW9aw03xOOEMurM",
+            authDomain: "discordunknow-54ce9.firebaseapp.com",
+            projectId: "discordunknow-54ce9",
+            storageBucket: "discordunknow-54ce9.firebasestorage.app",
+            messagingSenderId: "571989738366",
+            appId: "1:571989738366:web:009545030d8cbcfc11292f",
+            measurementId: "G-25J7QG5SM5"
+        };
+
+      
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+        const playlistRef = ref(db, 'playlist');
+
+    
+        document.getElementById('addBtn').addEventListener('click', () => {
+            const urlInput = document.getElementById('urlInput');
+            const url = urlInput.value.trim();
+            
+            if (url) {
+                push(playlistRef, url)
+                    .then(() => {
+                        console.log("Song added!");
+                        urlInput.value = '';
+                    })
+                    .catch((error) => console.error("Error adding song:", error));
+            }
+        });
+
+        onValue(playlistRef, (snapshot) => {
+            const list = document.getElementById('playlist');
+            list.innerHTML = ''; // Clear list
+            
+            if (!snapshot.exists()) {
+                list.innerHTML = '<li style="justify-content:center;">Playlist ว่างเปล่า</li>';
+                return;
+            }
+
+            const data = snapshot.val();
+            
+            Object.entries(data).forEach(([key, songUrl]) => {
+                const li = document.createElement('li');
+                li.innerHTML = `
+                    <a href="${songUrl}" target="_blank">${songUrl}</a>
+                    <button class="btn-delete" data-key="${key}">ลบ</button>
+                `;
+                
+               
+                li.querySelector('.btn-delete').addEventListener('click', function() {
+                    const keyToDelete = this.getAttribute('data-key');
+                    remove(ref(db, 'playlist/' + keyToDelete));
+                });
+
+                list.appendChild(li);
+            });
+        });
+    </script>
+</body>
+</html>
