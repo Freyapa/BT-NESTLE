@@ -4,6 +4,7 @@ node_modules/
 # Environment variables
 .env
 config/.env
+config/serviceAccountKey.json
 *.env
 
 # Logs and runtime data
