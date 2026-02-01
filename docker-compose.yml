@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  nestlebot:
+    build: .
+    container_name: nestlebot
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./config:/app/config # Persist config/cookies
+      - ./playlist.json:/app/playlist.json # Persist playlist
+    env_file:
+      - ./config/.env
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"

@@ -1,0 +1,186 @@
+[33mcommit d178ee5733647ed003ab0453f4926ca7276147e1[m[33m ([m[1;36mHEAD[m[33m, [m[1;33mtag: [m[1;33mv1.1.5[m[33m, [m[1;33mtag: [m[1;33mv1.1.4[m[33m, [m[1;32mmaster[m[33m)[m
+Author: NESTLE Developer <dev@example.com>
+Date:   Fri Dec 26 15:29:55 2025 +0700
+
+    Init Project v1.1.5
+
+[1mdiff --git a/.gitignore b/.gitignore[m
+[1mnew file mode 100644[m
+[1mindex 0000000..50f88e5[m
+[1m--- /dev/null[m
+[1m+++ b/.gitignore[m
+[36m@@ -0,0 +1,28 @@[m
+[32m+[m[32m# Dependencies[m
+[32m+[m[32mnode_modules/[m
+[32m+[m
+[32m+[m[32m# Environment variables[m
+[32m+[m[32m.env[m
+[32m+[m[32mconfig/.env[m
+[32m+[m[32m*.env[m
+[32m+[m
+[32m+[m[32m# Logs and runtime data[m
+[32m+[m[32m*.log[m
+[32m+[m[32mnpm-debug.log*[m
+[32m+[m[32myarn-debug.log*[m
+[32m+[m[32myarn-error.log*[m
+[32m+[m[32mpids[m
+[32m+[m[32m*.pid[m
+[32m+[m[32m*.seed[m
+[32m+[m[32m*.pid.lock[m
+[32m+[m
+[32m+[m[32m# Operating System[m
+[32m+[m[32m.DS_Store[m
+[32m+[m[32mThumbs.db[m
+[32m+[m
+[32m+[m[32m# Editor[m
+[32m+[m[32m.vscode/[m
+[32m+[m
+[32m+[m[32m# Build[m
+[32m+[m[32mdist/[m
+[32m+[m[32mbuild/[m
+[1mdiff --git a/Dockerfile b/Dockerfile[m
+[1mnew file mode 100644[m
+[1mindex 0000000..ac91c14[m
+[1m--- /dev/null[m
+[1m+++ b/Dockerfile[m
+[36m@@ -0,0 +1,22 @@[m
+[32m+[m[32mFROM node:20-bullseye-slim[m
+[32m+[m
+[32m+[m
+[32m+[m[32mRUN apt-get update && \[m
+[32m+[m[32m    apt-get install -y python3 ffmpeg build-essential && \[m
+[32m+[m[32m    rm -rf /var/lib/apt/lists/*[m
+[32m+[m[41m    [m
+[32m+[m
+[32m+[m
+[32m+[m[32mWORKDIR /app[m
+[32m+[m
+[32m+[m
+[32m+[m[32mCOPY package*.json ./[m
+[32m+[m[32mRUN npm install --production[m
+[32m+[m
+[32m+[m
+[32m+[m[32mCOPY . .[m
+[32m+[m
+[32m+[m
+[32m+[m[32mEXPOSE 8080[m
+[32m+[m
+[32m+[m[32mCMD ["node", "index.js"][m
+[1mdiff --git a/FORMYTEAM/Editplalist.html b/FORMYTEAM/Editplalist.html[m
+[1mnew file mode 100644[m
+[1mindex 0000000..6d2697c[m
+[1m--- /dev/null[m
+[1m+++ b/FORMYTEAM/Editplalist.html[m
+[36m@@ -0,0 +1,120 @@[m
+[32m+[m[32m<!DOCTYPE html>[m
+[32m+[m[32m<html lang="th">[m
+[32m+[m
+[32m+[m
+[32m+[m
+[32m+[m
+[32m+[m[32m<head>[m
+[32m+[m[32m    <meta charset="UTF-8">[m
+[32m+[m[32m    <meta name="viewport" content="width=device-width, initial-scale=1.0">[m
+[32m+[m[32m    <title>Bot Playlist Dashboard</title>[m
+[32m+[m[32m    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600&display=swap" rel="stylesheet">[m
+[32m+[m
+[32m+[m
+[32m+[m[41m    [m
+[32m+[m[32m    <style>[m
+[32m+[m[32m        body { font-family: 'Kanit', sans-serif; background: #1a1a1a; color: white; display: flex; flex-direction: column; align-items: center; padding: 20px; }[m
+[32m+[m[32m        .container { width: 100%; max-width: 600px; background: #2d2d2d; padding: 20px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }[m
+[32m+[m[32m        h1 { text-align: center; color: #ff4757; }[m
+[32m+[m[32m        .input-group { display: flex; gap: 10px; margin-bottom: 20px; }[m
+[32m+[m[32m        input { flex: 1; padding: 10px; border-radius: 5px; border: none; outline: none; }[m
+[32m+[m[32m        button { padding: 10px 20px; border-radius: 5px; border: none; cursor: pointer; font-weight: bold; transition: 0.2s; }[m
+[32m+[m[32m        .btn-add { background: #2ed573; color: white; }[m
+[32m+[m[32m        .btn-add:hover { background: #26af61; }[m
+[32m+[m[32m        .btn-delete { background: #ff4757; color: white; margin-left: auto; }[m
+[32m+[m[32m        .btn-delete:hover { background: #e04050; }[m
+[32m+[m[32m        ul { list-style: none; padding: 0; }[m
+[32m+[m[32m        li { background: #404040; margin: 5px 0; padding: 10px; border-radius: 5px; display: flex; align-items: center; justify-content: space-between; word-break: break-all; }[m
+[32m+[m[32m        a { color: #70a1ff; text-decoration: none; }[m
+[32m+[m[32m    </style>[m
+[32m+[m
+[32m+[m
+[32m+[m
+[32m+[m[32m</head>[m
+[32m+[m[32m<body>[m
+[32m+[m[32m    <div class="container">[m
+[32m+[m[32m        <h1>Cloud Playlist Manager</h1>[m
+[32m+[m[32m        <div class="input-group">[m
+[32m+[m[32m            <input type="text" id="urlInput" placeholder="วางลิงก์ YouTube / Spotify ที่นี่...">[m
+[32m+[m[32m            <button class="btn-add" id="addBtn">เพิ่มเพลง</button>[m
+[32m+[m[32m        </div>[m
+[32m+[m[32m        <ul id="playlist">[m
+[32m+[m[32m            <li style="text-align:center;">กำลังโหลดข้อมูล...</li>[m
+[32m+[m[32m        </ul>[m
+[32m+[m[32m    </div>[m
+[32m+[m
+[32m+[m
+[32m+[m
+[32m+[m
+[32m+[m
+[32m+[m
+[32m+[m
+[32m+[m
+[32m+[m[41m  [m
+[32m+[m
+[32m+[m
+[32m+[m[41m    [m
+[32m+[m[32m    <script type="module">[m
+[32m+[m[32m        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";[m
+[32m+[m[32m        import { getDatabase, ref, push, onValue, remove } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-database.js";[m
+[32m+[m
+[32m+[m[32m        const firebaseConfig = {[m
+[32m+[m[32m            apiKey: "AIzaSyBY5b_eChwHx3qO-J4YkW9aw03xOOEMurM",[m
+[32m+[m[32m            authDomain: "discordunknow-54ce9.firebaseapp.com",[m
+[32m+[m[32m            projectId: "discordunknow-54ce9",[m
+[32m+[m[32m            storageBucket: "discordunknow-54ce9.firebasestorage.app",[m
+[32m+[m[32m            messagingSenderId: "571989738366",[m
+[32m+[m[32m            appId: "1:571989738366:web:009545030d8cbcfc11292f",[m
+[32m+[m[32m            measurementId: "G-25J7QG5SM5"[m
+[32m+[m[32m        };[m
+[32m+[m
+[32m+[m[41m      [m
+[32m+[m[32m        const app = initializeApp(firebaseConfig);[m
+[32m+[m[32m        const db = getDatabase(app);[m
+[32m+[m[32m        const playlistRef = ref(db, 'playlist');[m
+[32m+[m
+[32m+[m[41m    [m
+[32m+[m[32m        document.getElementById('addBtn').addEventListener('click', () => {[m
+[32m+[m[32m            const urlInput = document.getElementById('urlInput');[m
+[32m+[m[32m            const url = urlInput.value.trim();[m
+[32m+[m[41m            [m
+[32m+[m[32m            if (url) {[m
+[32m+[m[32m                push(playlistRef, url)[m
+[32m+[m[32m                    .then(() => {[m
+[32m+[m[32m                        console.log("Song added!");[m
+[32m+[m[32m                        urlInput.value = '';[m
+[32m+[m[32m                    })[m
+[32m+[m[32m                    .catch((error) => console.error("Error adding song:", error));[m
+[32m+[m[32m            }[m
+[32m+[m[32m        });[m
+[32m+[m
+[32m+[m[32m        onValue(playlistRef, (snapshot) => {[m
+[32m+[m[32m            const list = document.getElementById('playlist');[m
+[32m+[m[32m            list.innerHTML = ''; // Clear list[m
+[32m+[m[41m            [m
+[32m+[m[32m            if (!snapshot.exists()) {[m
+[32m+[m[32m                list.innerHTML = '<li style="justify-content:center;">Playlist ว่างเปล่า</li>';[m
+[32m+[m[32m                return;[m
+[32m+[m[32m            }[m
+[32m+[m
+[32m+[m[32m            const data = snapshot.val();[m
+[32m+[m[41m            [m
+[32m+[m[32m            Object.entries(data).forEach(([key, songUrl]) => {[m
+[32m+[m[32m                const li = document.createElement('li');[m
+[32m+[m[32m                li.innerHTML = `[m
+[32m+[m[32m                    <a href="${songUrl}" target="_blank">${songUrl}</a>[m
+[32m+[m[32m                    <button class="btn-delete" data-key="${key}">ลบ</button>[m
+[32m+[m[32m                `;[m
+[32m+[m[41m                [m
+[32m+[m[41m               [m
+[32m+[m[32m                li.querySelector('.btn-delete').addEventListener('click', function() {[m
+[32m+[m[32m                    const keyToDelete = this.getAttribute('data-key');[m
+[32m+[m[32m                    remove(ref(db, 'playlist/' + k
